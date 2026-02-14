@@ -83,7 +83,7 @@ const Rezultate = () => {
 
             {/* Header Section */}
             <section className="pt-32 pb-12 px-4 md:px-8 bg-background relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5 pointer-events-none mix-blend-overlay"></div>
+                <div className="absolute inset-0 bg-white/5 opacity-5 pointer-events-none mix-blend-overlay"></div>
                 <div className="container mx-auto text-center max-w-4xl relative z-10">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -147,8 +147,8 @@ const Rezultate = () => {
                             key={filter}
                             onClick={() => setActiveFilter(filter)}
                             className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${activeFilter === filter
-                                    ? 'bg-gold text-background shadow-[0_0_15px_rgba(201,168,76,0.4)]'
-                                    : 'bg-transparent border border-gold/30 text-gold hover:bg-gold/10'
+                                ? 'bg-gold text-background shadow-[0_0_15px_rgba(201,168,76,0.4)]'
+                                : 'bg-transparent border border-gold/30 text-gold hover:bg-gold/10'
                                 }`}
                         >
                             {filter}
