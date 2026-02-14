@@ -56,9 +56,17 @@ export default {
           light: "hsl(var(--gold-light))",
           dark: "hsl(var(--gold-dark))",
         },
+        forest: {
+          DEFAULT: "hsl(var(--forest))",
+          light: "hsl(var(--forest-light))",
+        },
+        walnut: {
+          DEFAULT: "hsl(var(--walnut))",
+        },
+        // Keeping navy alias mapped to forest for backward compatibility
         navy: {
-          DEFAULT: "hsl(var(--navy))",
-          light: "hsl(var(--navy-light))",
+          DEFAULT: "hsl(var(--forest))",
+          light: "hsl(var(--forest-light))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

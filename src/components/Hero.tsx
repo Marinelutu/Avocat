@@ -35,6 +35,25 @@ const Hero = () => {
     }
   }, [isStatsInView]);
 
+  // Gavel and Column Animations
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Gavel Calculation: 0-500px scroll -> -30deg to 15deg
+  const gavelProgress = Math.min(scrollY / 500, 1);
+  const gavelRotation = -30 + (gavelProgress * 45);
+  const gavelTranslateY = gavelProgress * 40;
+
+  // Column Calculation: parallax
+  const columnOffset = scrollY * 0.3;
+
   // Typewriter effect
   useEffect(() => {
     const currentLine = typewriterLines[typewriterLineIndex];
@@ -109,6 +128,61 @@ const Hero = () => {
         >
           LEGE
         </span>
+        <span
+          className="font-serif font-bold"
+          style={{
+            fontSize: '30vw',
+            opacity: 0.03,
+            transform: 'rotate(-15deg)',
+            color: '#ffffff',
+            lineHeight: 1,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          LEGE
+        </span>
+      </div>
+
+      {/* Parallax Effects */}
+      {/* Gavel */}
+      <div
+        className="absolute pointer-events-none hidden md:block"
+        style={{
+          top: '40%',
+          left: '60%',
+          width: '35vw',
+          zIndex: 5,
+          opacity: 0.15,
+          transform: `translateY(${gavelTranslateY}px) rotate(${gavelRotation}deg)`,
+          transition: 'transform 0.1s linear',
+        }}
+      >
+        <img src="/gavel.png" alt="" className="w-full h-auto drop-shadow-2xl" />
+      </div>
+
+      {/* Columns */}
+      <div
+        className="absolute top-0 left-0 w-[15vw] max-w-[200px] pointer-events-none hidden lg:block"
+        style={{
+          top: '-10%', // Start slightly above
+          opacity: 0.08,
+          zIndex: 1,
+          transform: `translateY(${columnOffset}px)`,
+        }}
+      >
+        <img src="/column.png" alt="" className="w-full h-auto" />
+      </div>
+
+      <div
+        className="absolute top-0 right-0 w-[15vw] max-w-[200px] pointer-events-none hidden lg:block"
+        style={{
+          top: '-10%', // Start slightly above
+          opacity: 0.08,
+          zIndex: 1,
+          transform: `scaleX(-1) translateY(${columnOffset}px)`,
+        }}
+      >
+        <img src="/column.png" alt="" className="w-full h-auto" />
       </div>
 
       <GoldParticles />

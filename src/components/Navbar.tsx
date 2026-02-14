@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Menu, Phone } from 'lucide-react';
+import { Menu, Phone, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation, Link } from 'react-router-dom';
 import {
   Sheet,
   SheetTrigger,
@@ -9,18 +10,20 @@ import {
 } from '@/components/ui/sheet';
 
 const navLinks = [
-  { label: 'Acasa', href: '#acasa' },
-  { label: 'Servicii', href: '#servicii' },
-  { label: 'Despre Mine', href: '#despre' },
-  { label: 'Rezultate', href: '#cazuri' },
-  { label: 'Testimoniale', href: '#testimoniale' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Acasa', href: '/#acasa' },
+  { label: 'Servicii', href: '/#servicii' },
+  { label: 'Despre Mine', href: '/#despre' },
+  { label: 'Rezultate', href: '/rezultate' },
+  { label: 'Testimoniale', href: '/#testimoniale' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('#acasa');
+  const location = useLocation();
+  const isResultsPage = location.pathname === '/rezultate';
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 80);
@@ -53,9 +56,19 @@ const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     setSheetOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (href.startsWith('/#')) {
+      // If we are on results page, we need to navigate to home first
+      if (isResultsPage) {
+        window.location.href = href;
+      } else {
+        const id = href.replace('/#', '#');
+        const el = document.querySelector(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    } else if (href === '/rezultate') {
+      // Allow default Link behavior for route change
     }
   };
 
@@ -64,75 +77,96 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? 'shadow-lg'
           : 'bg-transparent'
-      }`}
+        }`}
       style={
         scrolled
           ? {
-              backgroundColor: 'rgba(10, 22, 40, 0.92)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              borderBottom: '1px solid rgba(201, 168, 76, 0.2)',
-            }
+            backgroundColor: 'rgba(10, 22, 40, 0.92)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderBottom: '1px solid rgba(201, 168, 76, 0.2)',
+          }
           : undefined
       }
     >
       <nav className="container mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <a
-          href="#acasa"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick('#acasa');
-          }}
-          className="font-serif text-lg md:text-xl tracking-wide text-foreground"
-        >
-          Av. Popescu |{' '}
-          <span className="text-primary">Cabinet de Avocatura</span>
-        </a>
-
-        {/* Desktop nav links */}
-        <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(link.href);
-              }}
-              className={`relative text-sm font-sans transition-colors duration-300 ${
-                activeLink === link.href
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-primary'
-              }`}
-            >
-              {link.label}
-              {activeLink === link.href && (
-                <motion.span
-                  layoutId="nav-underline"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                />
-              )}
-            </a>
-          ))}
-
-          {/* CTA Button */}
+        {/* Logo or Back Link */}
+        {isResultsPage ? (
+          <Link to="/" className="flex items-center gap-2 text-gold hover:text-white transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-serif text-lg tracking-wide hidden md:inline">Înapoi la site</span>
+          </Link>
+        ) : (
           <a
-            href="#contact"
+            href="#acasa"
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick('#contact');
+              handleNavClick('/#acasa');
             }}
-            className="navbar-cta-btn gold-shimmer bg-primary text-primary-foreground px-5 py-2.5 rounded text-sm font-sans font-semibold animate-pulse-gold hover:scale-105 transition-transform"
+            className="font-serif text-lg md:text-xl tracking-wide text-foreground"
           >
-            {'Consultatie Gratuita →'}
+            Av. Popescu |{' '}
+            <span className="text-primary">Cabinet de Avocatura</span>
           </a>
-        </div>
+        )}
+
+        {/* Desktop nav links - Only show on main page */}
+        {!isResultsPage && (
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href.startsWith('/#') ? link.href.replace('/', '') : link.href} // Simple crude fix for hash links on same page
+                onClick={(e) => {
+                  if (link.href.startsWith('/#')) {
+                    e.preventDefault();
+                    handleNavClick(link.href);
+                  }
+                }}
+                className={`relative text-sm font-sans transition-colors duration-300 ${activeLink === link.href.replace('/', '')
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:text-primary'
+                  }`}
+              >
+                {link.label}
+                {activeLink === link.href.replace('/', '') && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </Link>
+            ))}
+
+            {/* CTA Button */}
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('/#contact');
+              }}
+              className="navbar-cta-btn gold-shimmer bg-primary text-primary-foreground px-5 py-2.5 rounded text-sm font-sans font-semibold animate-pulse-gold hover:scale-105 transition-transform"
+            >
+              {'Consultatie Gratuita →'}
+            </a>
+          </div>
+        )}
+
+        {isResultsPage && (
+          <div className="hidden lg:flex items-center gap-8">
+            <a
+              href="/#contact"
+              className="navbar-cta-btn gold-shimmer bg-primary text-primary-foreground px-5 py-2.5 rounded text-sm font-sans font-semibold animate-pulse-gold hover:scale-105 transition-transform"
+            >
+              {'Consultatie Gratuita →'}
+            </a>
+          </div>
+        )}
 
         {/* Mobile hamburger with Sheet */}
         <div className="lg:hidden">
@@ -169,11 +203,10 @@ const Navbar = () => {
                       e.preventDefault();
                       handleNavClick(link.href);
                     }}
-                    className={`px-4 py-3 rounded-lg text-base font-sans transition-colors ${
-                      activeLink === link.href
+                    className={`px-4 py-3 rounded-lg text-base font-sans transition-colors ${activeLink === link.href
                         ? 'text-primary bg-primary/10'
                         : 'text-muted-foreground hover:text-primary hover:bg-secondary/50'
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </motion.a>
