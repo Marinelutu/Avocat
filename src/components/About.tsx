@@ -53,9 +53,14 @@ const About = () => {
                 }}
               />
 
-              {/* Portrait placeholder */}
-              <div className="aspect-[3/4] bg-secondary rounded-lg border border-border/30 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              {/* Portrait image */}
+              <div className="aspect-[3/4] bg-secondary rounded-lg border border-border/30 relative overflow-hidden group">
+                <img
+                  src="/lawyer.jpg"
+                  alt="Av. Alexandru Popescu"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="w-16 h-0.5 bg-primary mb-4" />
                   <p className="font-serif text-lg text-foreground">Av. Alexandru Popescu</p>
