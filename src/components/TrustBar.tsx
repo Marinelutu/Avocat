@@ -7,14 +7,24 @@ const items = [
 ];
 
 const TrustBar = () => (
-  <section id="trust" className="bg-secondary border-y border-border/20 py-4 overflow-hidden">
-    <div className="animate-marquee flex whitespace-nowrap">
-      {[...items, ...items].map((item, i) => (
-        <span key={i} className="inline-flex items-center mx-6 font-sans text-sm text-muted-foreground">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary mr-4 shrink-0" />
-          {item}
-        </span>
-      ))}
+  <section
+    id="trust"
+    className="py-4"
+    style={{
+      backgroundColor: '#F9FAFB',
+      borderTop: '1px solid #E5E7EB',
+      borderBottom: '1px solid #E5E7EB',
+    }}
+  >
+    <div className="container mx-auto px-4">
+      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+        {items.map((item, i) => (
+          <span key={i} className="inline-flex items-center font-sans text-sm" style={{ color: '#6B7280' }}>
+            <span className="w-1.5 h-1.5 rounded-full mr-3 shrink-0" style={{ backgroundColor: '#B8860B' }} />
+            {item}
+          </span>
+        ))}
+      </div>
     </div>
   </section>
 );

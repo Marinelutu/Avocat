@@ -1,7 +1,4 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { MessageSquare, FileText, Trophy } from 'lucide-react';
-import OrnamentalDivider from './OrnamentalDivider';
 
 const steps = [
   {
@@ -25,96 +22,68 @@ const steps = [
 ];
 
 const Process = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
-
   return (
-    <section className="py-20 md:py-28 bg-background relative overflow-hidden">
-      <OrnamentalDivider />
-      <div className="container mx-auto px-4" ref={sectionRef}>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="font-serif text-3xl md:text-5xl font-bold text-center mb-4 text-foreground text-balance"
+    <section className="py-20 md:py-28" style={{ backgroundColor: '#ffffff' }}>
+      <div className="container mx-auto px-4">
+        <h2
+          className="font-serif text-3xl md:text-4xl font-bold text-center mb-4 text-balance"
+          style={{ color: '#0A1628' }}
         >
-          Cum Te <span className="text-primary">Ajut</span> — 3 Pasi Simpli
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="font-sans text-muted-foreground text-center max-w-lg mx-auto mb-16"
+          Cum Te <span style={{ color: '#B8860B' }}>Ajut</span> — 3 Pasi Simpli
+        </h2>
+        <p
+          className="font-sans text-center max-w-lg mx-auto mb-16"
+          style={{ color: '#6B7280' }}
         >
           Un proces clar si transparent, de la prima discutie pana la rezultatul final.
-        </motion.p>
+        </p>
 
-        <div className="relative max-w-4xl mx-auto">
-          {/* SVG connecting line (desktop) */}
-          <svg
-            className="hidden md:block absolute top-[60px] left-0 w-full h-4 pointer-events-none"
-            viewBox="0 0 1000 4"
-            preserveAspectRatio="none"
-            fill="none"
-          >
-            {/* Track line */}
-            <line
-              x1="170"
-              y1="2"
-              x2="830"
-              y2="2"
-              stroke="hsl(43, 30%, 30%)"
-              strokeWidth="1"
-              opacity="0.3"
-            />
-            {/* Animated gold line */}
-            <motion.line
-              x1="170"
-              y1="2"
-              x2="830"
-              y2="2"
-              stroke="#C9A84C"
-              strokeWidth="2"
-              initial={{ pathLength: 0 }}
-              animate={isInView ? { pathLength: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.3, ease: 'easeInOut' }}
-            />
-          </svg>
-
-          {/* Steps */}
-          <div className="flex flex-col md:flex-row items-start md:items-start justify-between gap-12 md:gap-8">
-            {steps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 + i * 0.3 }}
-                className="flex-1 text-center relative"
-              >
-                {/* Number circle */}
-                <div className="relative mx-auto mb-6 w-[120px] h-[120px]">
-                  <div className="w-full h-full rounded-full bg-secondary border-2 border-primary/30 flex items-center justify-center relative z-10">
-                    <step.icon className="w-10 h-10 text-primary stroke-[1.5]" />
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-12 md:gap-8">
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <div key={i} className="flex-1 text-center relative">
+                  {/* Number circle */}
+                  <div className="relative mx-auto mb-6 w-[100px] h-[100px]">
+                    <div
+                      className="w-full h-full rounded-full flex items-center justify-center relative z-10"
+                      style={{
+                        backgroundColor: '#F9FAFB',
+                        border: '2px solid rgba(184, 134, 11, 0.3)',
+                      }}
+                    >
+                      <Icon className="w-10 h-10 stroke-[1.5]" style={{ color: '#B8860B' }} />
+                    </div>
+                    <span
+                      className="absolute -top-3 -right-2 font-serif text-5xl font-bold select-none pointer-events-none z-0"
+                      style={{ color: 'rgba(184, 134, 11, 0.15)' }}
+                    >
+                      {step.num}
+                    </span>
                   </div>
-                  {/* Large number behind */}
-                  <span
-                    className="absolute -top-3 -right-2 font-serif text-5xl font-bold text-primary/15 select-none pointer-events-none z-0"
-                  >
-                    {step.num}
-                  </span>
-                </div>
 
-                <div className="font-sans text-xs text-primary font-bold tracking-widest uppercase mb-2">
-                  Pasul {i + 1}
+                  <div
+                    className="font-sans text-xs font-bold tracking-widest uppercase mb-2"
+                    style={{ color: '#B8860B' }}
+                  >
+                    Pasul {i + 1}
+                  </div>
+                  <h3
+                    className="font-serif text-xl font-semibold mb-3"
+                    style={{ color: '#0A1628' }}
+                  >
+                    {step.title}
+                  </h3>
+                  <p
+                    className="font-sans text-sm leading-relaxed max-w-xs mx-auto"
+                    style={{ color: '#6B7280' }}
+                  >
+                    {step.desc}
+                  </p>
                 </div>
-                <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
-                  {step.title}
-                </h3>
-                <p className="font-sans text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-                  {step.desc}
-                </p>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

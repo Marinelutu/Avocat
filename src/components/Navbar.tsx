@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Menu, Phone, ArrowLeft } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation, Link } from 'react-router-dom';
+import { Menu, Phone } from 'lucide-react';
 import {
   Sheet,
   SheetTrigger,
@@ -10,20 +8,18 @@ import {
 } from '@/components/ui/sheet';
 
 const navLinks = [
-  { label: 'Acasa', href: '/#acasa' },
-  { label: 'Servicii', href: '/#servicii' },
-  { label: 'Despre Mine', href: '/#despre' },
-  { label: 'Rezultate', href: '/rezultate' },
-  { label: 'Testimoniale', href: '/#testimoniale' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Acasa', href: '#acasa' },
+  { label: 'Servicii', href: '#servicii' },
+  { label: 'Despre Mine', href: '#despre' },
+  { label: 'Cazuri Reale', href: '#cazuri' },
+  { label: 'Testimoniale', href: '#testimoniale' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('#acasa');
-  const location = useLocation();
-  const isResultsPage = location.pathname === '/rezultate';
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 80);
@@ -56,160 +52,119 @@ const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     setSheetOpen(false);
-    if (href.startsWith('/#')) {
-      // If we are on results page, we need to navigate to home first
-      if (isResultsPage) {
-        window.location.href = href;
-      } else {
-        const id = href.replace('/#', '#');
-        const el = document.querySelector(id);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    } else if (href === '/rezultate') {
-      // Allow default Link behavior for route change
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? 'shadow-lg'
-          : 'bg-transparent'
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-md' : ''
         }`}
-      style={
-        scrolled
-          ? {
-            backgroundColor: 'rgba(10, 22, 40, 0.92)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(201, 168, 76, 0.2)',
-          }
-          : undefined
-      }
+      style={{
+        backgroundColor: scrolled ? '#ffffff' : '#ffffff',
+        borderBottom: scrolled ? '1px solid #E5E7EB' : '1px solid transparent',
+      }}
     >
       <nav className="container mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        {/* Logo or Back Link */}
-        {isResultsPage ? (
-          <Link to="/" className="flex items-center gap-2 text-gold hover:text-white transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-            <span className="font-serif text-lg tracking-wide hidden md:inline">Înapoi la site</span>
-          </Link>
-        ) : (
-          <a
-            href="#acasa"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('/#acasa');
-            }}
-            className="font-serif text-lg md:text-xl tracking-wide text-foreground"
-          >
-            Av. Popescu |{' '}
-            <span className="text-primary">Cabinet de Avocatura</span>
-          </a>
-        )}
+        <a
+          href="#acasa"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick('#acasa');
+          }}
+          className="font-serif text-lg md:text-xl tracking-wide"
+          style={{ color: '#0A1628' }}
+        >
+          Av. Popescu |{' '}
+          <span style={{ color: '#B8860B' }}>Cabinet de Avocatura</span>
+        </a>
 
-        {/* Desktop nav links - Only show on main page */}
-        {!isResultsPage && (
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href.startsWith('/#') ? link.href.replace('/', '') : link.href} // Simple crude fix for hash links on same page
-                onClick={(e) => {
-                  if (link.href.startsWith('/#')) {
-                    e.preventDefault();
-                    handleNavClick(link.href);
-                  }
-                }}
-                className={`relative text-sm font-sans transition-colors duration-300 ${activeLink === link.href.replace('/', '')
-                    ? 'text-primary'
-                    : 'text-muted-foreground hover:text-primary'
-                  }`}
-              >
-                {link.label}
-                {activeLink === link.href.replace('/', '') && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
-            ))}
-
-            {/* CTA Button */}
+        {/* Desktop nav links */}
+        <div className="hidden lg:flex items-center gap-8">
+          {navLinks.map((link) => (
             <a
-              href="#contact"
+              key={link.href}
+              href={link.href}
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick('/#contact');
+                handleNavClick(link.href);
               }}
-              className="navbar-cta-btn gold-shimmer bg-primary text-primary-foreground px-5 py-2.5 rounded text-sm font-sans font-semibold animate-pulse-gold hover:scale-105 transition-transform"
+              className={`text-sm font-sans font-medium transition-colors duration-200 ${activeLink === link.href
+                ? 'font-bold'
+                : 'hover:opacity-80'
+                }`}
+              style={{
+                color: activeLink === link.href ? '#B8860B' : '#4B5563',
+              }}
             >
-              {'Consultatie Gratuita →'}
+              {link.label}
             </a>
-          </div>
-        )}
+          ))}
 
-        {isResultsPage && (
-          <div className="hidden lg:flex items-center gap-8">
-            <a
-              href="/#contact"
-              className="navbar-cta-btn gold-shimmer bg-primary text-primary-foreground px-5 py-2.5 rounded text-sm font-sans font-semibold animate-pulse-gold hover:scale-105 transition-transform"
-            >
-              {'Consultatie Gratuita →'}
-            </a>
-          </div>
-        )}
+          {/* CTA Button */}
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick('#contact');
+            }}
+            className="px-5 py-2.5 rounded text-sm font-sans font-semibold transition-colors"
+            style={{
+              backgroundColor: '#B8860B',
+              color: '#ffffff',
+            }}
+          >
+            Consultatie Gratuita →
+          </a>
+        </div>
 
         {/* Mobile hamburger with Sheet */}
         <div className="lg:hidden">
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
-              <button className="text-foreground p-2" aria-label="Deschide meniul">
+              <button className="p-2" style={{ color: '#0A1628' }} aria-label="Deschide meniul">
                 <Menu className="w-6 h-6" />
               </button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full sm:w-80 bg-background/95 backdrop-blur-xl border-l border-border/30"
+              className="w-full sm:w-80"
+              style={{ backgroundColor: '#ffffff' }}
             >
               <SheetTitle className="sr-only">Meniu navigare</SheetTitle>
               <div className="flex flex-col gap-2 pt-8">
                 {/* Mobile logo */}
-                <div className="px-2 pb-6 border-b border-border/20 mb-4">
-                  <span className="font-serif text-lg text-foreground">
+                <div className="px-2 pb-6 mb-4" style={{ borderBottom: '1px solid #E5E7EB' }}>
+                  <span className="font-serif text-lg" style={{ color: '#0A1628' }}>
                     Av. Popescu
                   </span>
-                  <p className="text-xs text-muted-foreground mt-1 font-sans">
+                  <p className="text-xs mt-1 font-sans" style={{ color: '#6B7280' }}>
                     Cabinet de Avocatura
                   </p>
                 </div>
 
-                {navLinks.map((link, i) => (
-                  <motion.a
+                {navLinks.map((link) => (
+                  <a
                     key={link.href}
                     href={link.href}
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.05 * i, duration: 0.3 }}
                     onClick={(e) => {
                       e.preventDefault();
                       handleNavClick(link.href);
                     }}
                     className={`px-4 py-3 rounded-lg text-base font-sans transition-colors ${activeLink === link.href
-                        ? 'text-primary bg-primary/10'
-                        : 'text-muted-foreground hover:text-primary hover:bg-secondary/50'
+                      ? 'font-bold'
+                      : ''
                       }`}
+                    style={{
+                      color: activeLink === link.href ? '#B8860B' : '#4B5563',
+                      backgroundColor: activeLink === link.href ? 'rgba(184, 134, 11, 0.06)' : 'transparent',
+                    }}
                   >
                     {link.label}
-                  </motion.a>
+                  </a>
                 ))}
 
                 {/* Mobile CTA */}
@@ -220,9 +175,13 @@ const Navbar = () => {
                       e.preventDefault();
                       handleNavClick('#contact');
                     }}
-                    className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded font-sans font-semibold text-base w-full"
+                    className="flex items-center justify-center gap-2 px-6 py-3 rounded font-sans font-semibold text-base w-full"
+                    style={{
+                      backgroundColor: '#B8860B',
+                      color: '#ffffff',
+                    }}
                   >
-                    {'Consultatie Gratuita →'}
+                    Consultatie Gratuita →
                   </a>
                 </div>
 
@@ -230,7 +189,11 @@ const Navbar = () => {
                 <div className="mt-4 px-2">
                   <a
                     href="tel:+40700000000"
-                    className="flex items-center justify-center gap-2 border border-primary/30 text-primary px-6 py-3 rounded font-sans text-sm w-full hover:bg-primary/10 transition-colors"
+                    className="flex items-center justify-center gap-2 px-6 py-3 rounded font-sans text-sm w-full transition-colors"
+                    style={{
+                      border: '1px solid rgba(184, 134, 11, 0.3)',
+                      color: '#B8860B',
+                    }}
                   >
                     <Phone className="w-4 h-4" />
                     +40 700 000 000
@@ -241,7 +204,7 @@ const Navbar = () => {
           </Sheet>
         </div>
       </nav>
-    </motion.header>
+    </header>
   );
 };
 

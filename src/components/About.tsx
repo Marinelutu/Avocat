@@ -1,7 +1,3 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import OrnamentalDivider from './OrnamentalDivider';
-
 const badges = [
   { value: '15+', label: 'Ani Experienta' },
   { value: '500+', label: 'Cazuri' },
@@ -9,62 +5,49 @@ const badges = [
 ];
 
 const About = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
-
   return (
-    <section id="despre" className="relative py-20 md:py-28 overflow-hidden">
-      {/* Morphing blob background */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] opacity-[0.07] pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at center, hsl(216, 60%, 20%), hsl(216, 60%, 9%))',
-          animation: 'morphBlob 10s ease-in-out infinite',
-          borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%',
-        }}
-      />
-
-      <OrnamentalDivider />
-
-      <div className="container mx-auto px-4 relative z-10" ref={sectionRef}>
+    <section id="despre" className="py-20 md:py-28" style={{ backgroundColor: '#ffffff' }}>
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left: Portrait with gold L-frame */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="relative"
-          >
+          {/* Left: Portrait */}
+          <div className="relative">
             <div className="relative">
-              {/* Gold L-frame top-left */}
+              {/* Gold corner accents */}
               <div
-                className="absolute -top-4 -left-4 w-24 h-24 pointer-events-none z-20"
+                className="absolute -top-3 -left-3 w-16 h-16 pointer-events-none z-20"
                 style={{
-                  borderTop: '3px solid #C9A84C',
-                  borderLeft: '3px solid #C9A84C',
+                  borderTop: '3px solid #B8860B',
+                  borderLeft: '3px solid #B8860B',
                 }}
               />
-              {/* Gold L-frame bottom-right */}
               <div
-                className="absolute -bottom-4 -right-4 w-24 h-24 pointer-events-none z-20"
+                className="absolute -bottom-3 -right-3 w-16 h-16 pointer-events-none z-20"
                 style={{
-                  borderBottom: '3px solid #C9A84C',
-                  borderRight: '3px solid #C9A84C',
+                  borderBottom: '3px solid #B8860B',
+                  borderRight: '3px solid #B8860B',
                 }}
               />
 
               {/* Portrait image */}
-              <div className="aspect-[3/4] bg-secondary rounded-lg border border-border/30 relative overflow-hidden group">
+              <div
+                className="aspect-[3/4] rounded-lg relative overflow-hidden"
+                style={{ border: '1px solid #E5E7EB' }}
+              >
                 <img
                   src="/lawyer.jpg"
                   alt="Av. Alexandru Popescu"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: 'linear-gradient(to top, rgba(10, 22, 40, 0.8) 0%, rgba(10, 22, 40, 0.1) 40%, transparent 100%)',
+                  }}
+                />
                 <div className="absolute bottom-8 left-8 right-8">
-                  <div className="w-16 h-0.5 bg-primary mb-4" />
-                  <p className="font-serif text-lg text-foreground">Av. Alexandru Popescu</p>
-                  <p className="font-sans text-sm text-muted-foreground">Baroul Bucuresti</p>
+                  <div className="w-16 h-0.5 mb-4" style={{ backgroundColor: '#B8860B' }} />
+                  <p className="font-serif text-lg" style={{ color: '#ffffff' }}>Av. Alexandru Popescu</p>
+                  <p className="font-sans text-sm" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Baroul Bucuresti</p>
                 </div>
               </div>
             </div>
@@ -72,32 +55,32 @@ const About = () => {
             {/* Achievement badges */}
             <div className="flex items-center justify-center gap-3 mt-8">
               {badges.map((b, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-primary/40 bg-background/80"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full"
+                  style={{
+                    border: '1px solid rgba(184, 134, 11, 0.3)',
+                    backgroundColor: '#ffffff',
+                  }}
                 >
-                  <span className="font-serif text-sm font-bold text-primary">{b.value}</span>
-                  <span className="font-sans text-xs text-muted-foreground">{b.label}</span>
-                </motion.div>
+                  <span className="font-serif text-sm font-bold" style={{ color: '#B8860B' }}>{b.value}</span>
+                  <span className="font-sans text-xs" style={{ color: '#6B7280' }}>{b.label}</span>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Right: Text content */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
-          >
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-foreground text-balance">
+          <div>
+            <h2
+              className="font-serif text-3xl md:text-4xl font-bold mb-6 text-balance"
+              style={{ color: '#0A1628' }}
+            >
               Un Avocat In Care Poti Avea{' '}
-              <span className="text-primary">Incredere</span>
+              <span style={{ color: '#B8860B' }}>Incredere</span>
             </h2>
 
-            <div className="font-sans text-muted-foreground space-y-4 leading-relaxed text-[15px]">
+            <div className="font-sans space-y-4 leading-relaxed text-base" style={{ color: '#4B5563' }}>
               <p>
                 Cu o cariera de peste 15 ani in domeniul juridic, am reprezentat cu succes sute de
                 clienti in cele mai diverse cauze. De la litigii civile complexe la aparare penala
@@ -115,17 +98,13 @@ const About = () => {
               </p>
             </div>
 
-            {/* Paper-style quote */}
-            <motion.blockquote
-              initial={{ opacity: 0, y: 20, rotate: 0 }}
-              animate={isInView ? { opacity: 1, y: 0, rotate: -0.5 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-8 px-6 py-5 relative"
+            {/* Quote */}
+            <blockquote
+              className="mt-8 px-6 py-5"
               style={{
-                backgroundColor: '#F5EDD8',
-                color: '#2A1A05',
-                borderLeft: '3px solid #C9A84C',
-                boxShadow: '2px 3px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3)',
+                backgroundColor: '#FFFBEB',
+                color: '#0A1628',
+                borderLeft: '3px solid #B8860B',
                 borderRadius: '2px',
               }}
             >
@@ -133,8 +112,8 @@ const About = () => {
                 &bdquo;Fiecare client merita cel mai bun aparator. Iau in serios aceasta
                 responsabilitate.&rdquo;
               </p>
-            </motion.blockquote>
-          </motion.div>
+            </blockquote>
+          </div>
         </div>
       </div>
     </section>

@@ -1,168 +1,193 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { ArrowRight, CheckCircle } from 'lucide-react';
-import { useCountUp } from '@/hooks/useScrollAnimation';
+import { CheckCircle, Scale, Shield, Briefcase, Heart, Home } from 'lucide-react';
 
-const tickerItems = [
-  { label: 'Achitare completa', type: 'Penal', date: 'Oct 2024' },
-  { label: 'Castig 180.000 RON', type: 'Civil', date: 'Sep 2024' },
-  { label: 'Custodie acordata', type: 'Familie', date: 'Nov 2024' },
-  { label: 'Despagubiri integrale', type: 'Imobiliar', date: 'Aug 2024' },
-  { label: 'Contract anulat', type: 'Comercial', date: 'Jul 2024' },
+interface CaseStudy {
+    icon: typeof Scale;
+    category: string;
+    title: string;
+    description: string;
+    outcome: string;
+    highlight: string;
+}
+
+const cases: CaseStudy[] = [
+    {
+        icon: Shield,
+        category: 'Drept Penal',
+        title: 'Achitare completă în dosar de fraudă',
+        description:
+            'Clientul a fost acuzat de fraudă bancară cu un prejudiciu estimat la 200.000 EUR. Am demonstrat lipsa vinovăției prin analiza detaliată a tranzacțiilor și identificarea erorilor din rechizitoriu.',
+        outcome: 'Achitare completă',
+        highlight: '200.000 EUR prejudiciu contestat',
+    },
+    {
+        icon: Scale,
+        category: 'Drept Civil',
+        title: 'Recuperare despăgubiri în litigiu civil',
+        description:
+            'Un client a suferit daune materiale semnificative în urma unui contract nerespectate. Am obținut despăgubiri integrale plus dobânzi legale, într-un termen record de 6 luni.',
+        outcome: 'Despăgubiri integrale obținute',
+        highlight: '150.000 EUR recuperați',
+    },
+    {
+        icon: Briefcase,
+        category: 'Drept Comercial',
+        title: 'Apărarea unei companii într-un litigiu de concurență neloială',
+        description:
+            'O companie locală era amenințată cu pierderea contractelor majore din cauza practicilor neloiale ale unui competitor. Am obținut ordonanță președințială și daune compensatorii.',
+        outcome: 'Câștig definitiv în instanță',
+        highlight: 'Contracte protejate integral',
+    },
+    {
+        icon: Heart,
+        category: 'Dreptul Familiei',
+        title: 'Custodie exclusivă obținută în favoarea mamei',
+        description:
+            'Într-un caz complex de divorț cu implicații internaționale, am reușit obținerea custodiei exclusive și stabilirea unui program de vizitare echitabil, protejând interesul superior al copiilor.',
+        outcome: 'Custodie exclusivă acordată',
+        highlight: 'Interesul copiilor protejat',
+    },
+    {
+        icon: Home,
+        category: 'Drept Imobiliar',
+        title: 'Rezolvarea unui litigiu funciar vechi de 10 ani',
+        description:
+            'Moștenitorii unui teren de 5 hectare se aflau într-un conflict vechi de un deceniu. Am reușit medierea și soluția definitivă prin partaj judiciar, cu recunoașterea drepturilor tuturor părților.',
+        outcome: 'Partaj definitiv realizat',
+        highlight: '5 hectare de teren clarificate',
+    },
 ];
 
-const cases = [
-  {
-    situation: 'Client acuzat nedrept de frauda in cadrul unei companii internationale',
-    action: 'Strategie de aparare completa cu probe documentare si martori experti',
-    result: 'Achitare completa in 4 luni — toate acuzatiile respinse',
-  },
-  {
-    situation: 'Disputa imobiliara complexa cu un dezvoltator — pierdere financiara de 200.000 EUR',
-    action: 'Actiune civila cu expertiza tehnica si juridica specializata',
-    result: 'Despagubiri integrale obtinute + daune morale acordate',
-  },
-  {
-    situation: 'Concediere abuziva a unui director executiv de la o companie multinationala',
-    action: 'Contestatie in instanta + negociere directa cu echipa juridica adversa',
-    result: 'Reintegrare in functie + compensatii salariale pe 18 luni',
-  },
-];
+const categoryColors: Record<string, string> = {
+    'Drept Penal': '#DC2626',
+    'Drept Civil': '#2563EB',
+    'Drept Comercial': '#7C3AED',
+    'Dreptul Familiei': '#DB2777',
+    'Drept Imobiliar': '#059669',
+};
 
 const Cases = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
-  const successRate = useCountUp(98, 2000, isInView);
+    return (
+        <section id="cazuri" className="py-20 md:py-28" style={{ backgroundColor: '#F9FAFB' }}>
+            <div className="container mx-auto px-4">
+                {/* Header */}
+                <div className="text-center mb-16">
+                    <h2
+                        className="font-serif text-3xl md:text-4xl font-bold mb-4"
+                        style={{ color: '#0A1628' }}
+                    >
+                        Cazuri <span style={{ color: '#B8860B' }}>Reale</span>
+                    </h2>
 
-  const tickerContent = tickerItems
-    .map((t) => `\u2713 ${t.label} \u00B7 ${t.type} \u00B7 ${t.date}`)
-    .join('  \u00B7  ');
+                    <div
+                        className="mx-auto mb-5"
+                        style={{ width: 60, height: 2, backgroundColor: '#B8860B' }}
+                    />
 
-  return (
-    <section id="cazuri" className="relative overflow-hidden">
-      {/* Scrolling ticker */}
-      <div className="w-full bg-[#0A1628] border-y border-[#C9A84C]/20 py-3 overflow-hidden">
-        <div className="flex whitespace-nowrap" style={{ animation: 'marquee 30s linear infinite' }}>
-          <span className="inline-block px-8 text-sm font-sans tracking-wide" style={{ color: '#C9A84C' }}>
-            {tickerContent}  &middot;  {tickerContent}  &middot;  {tickerContent}
-          </span>
-        </div>
-      </div>
-
-      {/* Main section */}
-      <div className="py-20 md:py-28 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary via-background to-secondary" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,hsla(43,52%,54%,0.04)_0%,transparent_60%)]" />
-
-        <div className="relative container mx-auto px-4" ref={sectionRef}>
-          <motion.h2
-            className="font-serif text-3xl md:text-5xl font-bold text-center mb-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            Rezultate <span style={{ color: '#C9A84C' }}>Reale</span> Pentru Clienti Reali
-          </motion.h2>
-          <motion.p
-            className="font-sans text-muted-foreground text-center max-w-lg mx-auto mb-14"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
-            Cateva dintre cazurile care definesc abordarea mea profesionala.
-          </motion.p>
-
-          {/* Case cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            {cases.map((c, i) => (
-              <motion.div
-                key={i}
-                className="bg-[#0D1F3C] border border-[#C9A84C]/20 rounded-lg p-7 hover:border-[#C9A84C]/60 transition-colors duration-300"
-                initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.15 * i }}
-              >
-                <div className="font-sans text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#C9A84C' }}>
-                  Cazul {i + 1}
+                    <p
+                        className="font-sans text-base md:text-lg max-w-2xl mx-auto"
+                        style={{ color: '#6B7280' }}
+                    >
+                        Rezultate concrete obținute pentru clienții noștri. Fiecare caz reprezintă o poveste de succes și o dovadă a dedicării noastre.
+                    </p>
                 </div>
-                <div className="space-y-4">
-                  <div>
-                    <span className="font-sans text-xs text-muted-foreground block mb-1">Situatie</span>
-                    <p className="font-sans text-sm text-foreground">{c.situation}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-px" style={{ backgroundColor: 'hsla(43,52%,54%,0.3)' }} />
-                    <ArrowRight className="w-3 h-3 flex-shrink-0" style={{ color: '#C9A84C' }} />
-                    <div className="w-6 h-px" style={{ backgroundColor: 'hsla(43,52%,54%,0.3)' }} />
-                  </div>
-                  <div>
-                    <span className="font-sans text-xs text-muted-foreground block mb-1">Actiune</span>
-                    <p className="font-sans text-sm text-foreground">{c.action}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-px" style={{ backgroundColor: 'hsla(43,52%,54%,0.3)' }} />
-                    <ArrowRight className="w-3 h-3 flex-shrink-0" style={{ color: '#C9A84C' }} />
-                    <div className="w-6 h-px" style={{ backgroundColor: 'hsla(43,52%,54%,0.3)' }} />
-                  </div>
-                  <div>
-                    <span className="font-sans text-xs font-semibold block mb-1" style={{ color: '#C9A84C' }}>
-                      <CheckCircle className="w-3 h-3 inline mr-1" />
-                      Rezultat
-                    </span>
-                    <p className="font-sans text-sm text-foreground font-medium">{c.result}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
 
-          {/* Big stat with shimmer */}
-          <motion.div
-            className="text-center mb-10"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <div className="relative inline-block">
-              <div className="font-serif text-6xl md:text-8xl font-bold" style={{ color: '#C9A84C' }}>
-                {successRate}%
-              </div>
-              {/* One-time shimmer overlay */}
-              {isInView && (
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent, hsla(43,52%,54%,0.3), transparent)',
-                  }}
-                  initial={{ x: '-100%' }}
-                  animate={{ x: '200%' }}
-                  transition={{ duration: 1.2, delay: 1.5, ease: 'easeOut' }}
-                />
-              )}
+                {/* Cases grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {cases.map((c, i) => {
+                        const Icon = c.icon;
+                        const tagColor = categoryColors[c.category] || '#B8860B';
+
+                        return (
+                            <div
+                                key={i}
+                                className="rounded-xl flex flex-col overflow-hidden"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    border: '1px solid #E5E7EB',
+                                }}
+                            >
+                                {/* Top accent bar */}
+                                <div className="h-1" style={{ backgroundColor: tagColor }} />
+
+                                <div className="p-7 flex flex-col flex-1">
+                                    {/* Category + Icon */}
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div
+                                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+                                            style={{ backgroundColor: `${tagColor}10` }}
+                                        >
+                                            <Icon className="w-5 h-5" style={{ color: tagColor }} />
+                                        </div>
+                                        <span
+                                            className="font-sans text-xs font-bold uppercase tracking-wider"
+                                            style={{ color: tagColor }}
+                                        >
+                                            {c.category}
+                                        </span>
+                                    </div>
+
+                                    {/* Title */}
+                                    <h3
+                                        className="font-serif text-lg font-bold mb-3 leading-snug"
+                                        style={{ color: '#0A1628' }}
+                                    >
+                                        {c.title}
+                                    </h3>
+
+                                    {/* Description */}
+                                    <p
+                                        className="font-sans text-sm leading-relaxed mb-5 flex-1"
+                                        style={{ color: '#6B7280' }}
+                                    >
+                                        {c.description}
+                                    </p>
+
+                                    {/* Outcome */}
+                                    <div
+                                        className="rounded-lg p-4 mt-auto"
+                                        style={{ backgroundColor: '#F0FDF4', border: '1px solid #DCFCE7' }}
+                                    >
+                                        <div className="flex items-center gap-2 mb-1.5">
+                                            <CheckCircle className="w-4 h-4" style={{ color: '#16A34A' }} />
+                                            <span
+                                                className="font-sans text-sm font-bold"
+                                                style={{ color: '#166534' }}
+                                            >
+                                                {c.outcome}
+                                            </span>
+                                        </div>
+                                        <span
+                                            className="font-sans text-xs font-medium"
+                                            style={{ color: '#15803D' }}
+                                        >
+                                            {c.highlight}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* CTA */}
+                <div className="text-center mt-14">
+                    <p
+                        className="font-sans text-base mb-6"
+                        style={{ color: '#6B7280' }}
+                    >
+                        Ai o situație similară? Hai să discutăm.
+                    </p>
+                    <a
+                        href="#contact"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded font-sans font-bold text-sm"
+                        style={{ backgroundColor: '#B8860B', color: '#ffffff' }}
+                    >
+                        Solicită Consultație Gratuită →
+                    </a>
+                </div>
             </div>
-            <p className="font-sans text-muted-foreground mt-2 text-lg">Rata de succes din cazurile reprezentate</p>
-          </motion.div>
-
-          {/* CTA button */}
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.8 }}
-          >
-            <a
-              href="#contact"
-              className="gold-shimmer inline-flex items-center gap-2 px-8 py-4 rounded font-sans font-bold text-sm tracking-wide transition-all duration-300 hover:shadow-[0_0_20px_hsla(43,52%,54%,0.3)]"
-              style={{ backgroundColor: '#C9A84C', color: '#0A1628' }}
-            >
-              {'Alatura-te celor 500+ clienti castigatori'}
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 };
 
 export default Cases;

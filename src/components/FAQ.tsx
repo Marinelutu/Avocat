@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const faqs = [
   { q: 'Cât costă o consultație inițială?', a: 'Prima consultație este complet gratuită și fără obligații. Analizăm împreună situația ta și îți ofer o evaluare sinceră a cazului, inclusiv estimarea costurilor și a duratei.' },
@@ -12,42 +11,44 @@ const faqs = [
 ];
 
 const FAQ = () => {
-  const { ref, isVisible } = useScrollAnimation();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 md:py-28 bg-background">
-      <div className="container mx-auto px-4 max-w-3xl" ref={ref}>
-        <h2 className={`text-reveal font-serif text-3xl md:text-5xl font-bold text-center mb-14 ${isVisible ? 'revealed' : ''}`}>
-          Întrebări <span className="text-primary">Frecvente</span>
+    <section className="py-20 md:py-28" style={{ backgroundColor: '#ffffff' }}>
+      <div className="container mx-auto px-4 max-w-3xl">
+        <h2
+          className="font-serif text-3xl md:text-4xl font-bold text-center mb-14"
+          style={{ color: '#0A1628' }}
+        >
+          Întrebări <span style={{ color: '#B8860B' }}>Frecvente</span>
         </h2>
 
         <div className="space-y-3">
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className={`border border-border/30 rounded-lg overflow-hidden transition-all duration-500 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              }`}
-              style={{ transitionDelay: isVisible ? `${i * 80}ms` : '0ms' }}
+              className="rounded-lg overflow-hidden"
+              style={{ border: '1px solid #E5E7EB' }}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-secondary/50 transition-colors"
+                className="w-full flex items-center justify-between p-5 text-left transition-colors"
+                style={{
+                  backgroundColor: openIndex === i ? '#F9FAFB' : '#ffffff',
+                }}
               >
-                <span className="font-sans font-semibold text-foreground pr-4">{faq.q}</span>
+                <span className="font-sans font-semibold pr-4" style={{ color: '#0A1628' }}>{faq.q}</span>
                 <ChevronDown
-                  className={`w-5 h-5 text-primary shrink-0 transition-transform duration-300 ${
-                    openIndex === i ? 'rotate-180' : ''
-                  }`}
+                  className={`w-5 h-5 shrink-0 transition-transform duration-300 ${openIndex === i ? 'rotate-180' : ''
+                    }`}
+                  style={{ color: '#B8860B' }}
                 />
               </button>
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openIndex === i ? 'max-h-60 pb-5 px-5' : 'max-h-0'
-                }`}
+                className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-60 pb-5 px-5' : 'max-h-0'
+                  }`}
               >
-                <p className="font-sans text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+                <p className="font-sans text-sm leading-relaxed" style={{ color: '#6B7280' }}>{faq.a}</p>
               </div>
             </div>
           ))}
